@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* interval between updates (in ms) */
-const unsigned int interval = 1000;
+const unsigned int interval = 1700;
 
 /* text to show if no value can be retrieved */
 static const char unknown_str[] = "n/a";
@@ -30,6 +30,7 @@ static const char unknown_str[] = "n/a";
  * hostname            hostname                        NULL
  * ipv4                IPv4 address                    interface name (eth0)
  * ipv6                IPv6 address                    interface name (eth0)
+ * leaked_ip           IP address leaked to Internet   NULL
  * kernel_release      `uname -r`                      NULL
  * keyboard_indicators caps/num lock indicators        format string (c?n?)
  *                                                     see keyboard_indicators.c
@@ -65,11 +66,13 @@ static const char unknown_str[] = "n/a";
  */
 static const struct arg args[] = {
 	/* function format          argument */
-    { netspeed_rx, "rx: %6sB/s | ", "wlp3s0" },
+    { netspeed_rx, "rx: %6sB/s | ", "wlan0" },
+	{ leaked_ip, "Leaked IP: %s | ", NULL },
     { cpu_perc, "[CPU  %3s%%] | ", NULL },
     { ram_used, "[RAM  %s", NULL },
     { ram_perc, " %2s%%] | ", NULL },
     { battery_perc, " %s%% | ", "BAT1", NULL },
     { run_command, " %s | ", "amixer get Master | sed -n '/\\[/p' | head -n1 | cut -d'[' -f2 | cut -d ']' -f1", NULL },
-    { datetime, "%s",           "%a %b %e %R" },
+    { datetime, "%s | ",           "%a %b %e %R" },
+	{ keymap, "%s", NULL },
 };
